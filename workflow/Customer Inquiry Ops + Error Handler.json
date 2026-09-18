@@ -1,5 +1,5 @@
 {
-  "name": "Customer Inquiry Ops - Error Handler",
+  "name": "Customer Inquiry Ops + Error Handler",
   "nodes": [
     {
       "parameters": {
@@ -48,10 +48,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        464,
-        0
+        -288,
+        304
       ],
-      "id": "4104ffe5-e78f-46dc-a98d-b94510d0fba2",
+      "id": "17aeb98a-f348-45f4-93dc-c2b5d6832afb",
       "name": "02 - Input - Sample Inquiry",
       "disabled": true
     },
@@ -62,25 +62,25 @@
             {
               "id": "9969d4f2-b928-4c71-b351-984254334c7c",
               "name": "name",
-              "value": "={{ $json.name }}",
+              "value": "={{ ($json.name || '').trim() }}",
               "type": "string"
             },
             {
               "id": "438db2f4-5b2b-44c0-89c3-2e0535985455",
               "name": "email",
-              "value": "={{ $json.email }}",
+              "value": "={{ ($json.email || '').trim().toLowerCase() }}",
               "type": "string"
             },
             {
               "id": "494867b5-79ef-4321-b830-8af274ac0c0e",
               "name": "subject",
-              "value": "={{ $json.subject }}",
+              "value": "={{ ($json.subject || '').trim() }}",
               "type": "string"
             },
             {
               "id": "3eacbbdc-2e64-4c9b-a74f-a4721aa63463",
               "name": "message",
-              "value": "={{ $json.message }}",
+              "value": "={{ ($json.message || '').trim() }}",
               "type": "string"
             }
           ]
@@ -90,10 +90,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        672,
-        0
+        -80,
+        304
       ],
-      "id": "de8479bc-6abb-4ab7-8402-9ac1dea5efcf",
+      "id": "81dc2039-1815-4a73-a0d8-e54c9ea51df4",
       "name": "03 - Normalize - Inquiry Data"
     },
     {
@@ -144,10 +144,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        896,
-        0
+        144,
+        304
       ],
-      "id": "b142a4df-b27c-42ac-8642-279bee5258a3",
+      "id": "031753fa-27f9-46ea-8fa0-8d5fb9de873e",
       "name": "04 - Validate - Required Fields"
     },
     {
@@ -179,10 +179,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        1120,
-        96
+        368,
+        400
       ],
-      "id": "7ae6609d-94f1-4677-bfe5-cbc851875e4c",
+      "id": "7559cbcb-a3fe-40a9-963a-57a493ad2baa",
       "name": "07 - Error - Missing Required Fields"
     },
     {
@@ -213,10 +213,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1040,
-        -96
+        304,
+        192
       ],
-      "id": "1a47b97c-fe4a-443e-9ad9-4694a7210fbf",
+      "id": "2aca071d-9bed-4df1-9848-ea9e8812ad4e",
       "name": "05 - Validate - Email Format"
     },
     {
@@ -307,10 +307,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        1264,
-        -192
+        512,
+        112
       ],
-      "id": "e0362e86-ca87-4a5c-a7a9-0ea9a32a32ea",
+      "id": "5473bc77-210a-49c9-8cc5-776e1f1df8af",
       "name": "06 - Classify - Inquiry Type"
     },
     {
@@ -331,49 +331,82 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        1488,
-        -288
+        736,
+        16
       ],
-      "id": "1e2797c2-4847-41a0-836b-17b53f8ea7bc",
+      "id": "05e58fff-1878-46fe-b5e6-65db07bc90ec",
       "name": "07 - Tag - Refund Inquiry"
     },
     {
       "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "605df534-a57f-4886-88b4-eb7da15f8b84",
+              "name": "inquiry_type",
+              "value": "technical",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
         "options": {}
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        1488,
-        -144
+        736,
+        160
       ],
-      "id": "a801ed6a-ee9d-4e5e-843a-5fe57f90d30b",
+      "id": "81e2737d-d2cd-445a-ad2f-2c97cd4aafa0",
       "name": "08 - Tag - Technical Inquiry"
     },
     {
       "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "52f8e2e6-ca10-4a14-8144-29947d2ad194",
+              "name": "inquiry_type",
+              "value": "price",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
         "options": {}
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        1488,
-        -16
+        736,
+        288
       ],
-      "id": "8f60461e-c342-4641-bd8d-e588598cafc7",
+      "id": "d6d0ff56-40c8-4d32-b1d2-93b3943ec1f5",
       "name": "09 - Tag - Price Inquiry"
     },
     {
       "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a61bdb68-4ba7-4c42-bd2f-4fca40d66b29",
+              "name": "inquiry_type",
+              "value": "other",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
         "options": {}
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        1488,
-        128
+        736,
+        432
       ],
-      "id": "b297b4ed-75fa-460d-8a38-13b049f519a8",
+      "id": "fbecc092-a299-4854-a20c-96075c201fc8",
       "name": "10 - Tag - Other Inquiry"
     },
     {
@@ -394,10 +427,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        1824,
-        -128
+        1072,
+        176
       ],
-      "id": "cdfae9de-1e41-44e2-a982-719e6f158474",
+      "id": "b79daee2-e959-4b74-b284-391061bf5d83",
       "name": "11 - Prepare - AI Draft Input"
     },
     {
@@ -412,10 +445,10 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.9,
       "position": [
-        1984,
-        -128
+        1232,
+        176
       ],
-      "id": "5a5dedb5-dce1-4122-b3eb-b2e3a682af49",
+      "id": "ea908700-c9c3-4311-a9e6-230f29f3fffa",
       "name": "12 - AI - Draft Response1"
     },
     {
@@ -426,10 +459,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
       "typeVersion": 1,
       "position": [
-        1984,
-        48
+        1232,
+        352
       ],
-      "id": "83bd0c0d-f2c7-4736-93f7-91cea4d3915d",
+      "id": "d1de87f6-0d51-4f45-92e5-1d7f2748f4f6",
       "name": "OpenRouter Chat Model",
       "credentials": {
         "openRouterApi": {
@@ -491,10 +524,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        2288,
-        -128
+        1536,
+        176
       ],
-      "id": "c5b6ce97-1083-4b7e-9644-0458aa90c742",
+      "id": "fec414c4-eb1d-45ed-a9f3-a89012957b5c",
       "name": "13 - Prepare - Draft Result"
     },
     {
@@ -503,7 +536,7 @@
           "assignments": [
             {
               "id": "0eb0400b-3f64-4130-8258-38cc7631a3a6",
-              "name": "approval_status ",
+              "name": "approval_status",
               "value": "approved",
               "type": "string"
             }
@@ -515,10 +548,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        2464,
-        -128
+        1712,
+        176
       ],
-      "id": "84983566-1335-4ac8-bb8c-17a8ffe97c90",
+      "id": "8b39a34a-d9f9-463a-9109-5e1edb79e5b6",
       "name": "14 - Approval - Manual Test Decision"
     },
     {
@@ -533,7 +566,7 @@
           "conditions": [
             {
               "id": "f53f5fbb-bb91-46dc-a8e5-e87d722cb504",
-              "leftValue": "={{ $json[\"approval_status \"] }}",
+              "leftValue": "={{ $json.approval_status }}",
               "rightValue": "approved",
               "operator": {
                 "type": "string",
@@ -549,10 +582,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        2656,
-        -128
+        1904,
+        176
       ],
-      "id": "172c659a-3a7f-4ddd-b5aa-a748f9b91dc7",
+      "id": "99290619-6f58-4cb0-abf5-023d3174bbeb",
       "name": "15 - Validate - Approval Decision"
     },
     {
@@ -561,21 +594,22 @@
           "assignments": [
             {
               "id": "715e5984-5153-4592-acef-21b74a2e68bc",
-              "name": "workflow_status ",
+              "name": "workflow_status",
               "value": "needs_revision",
               "type": "string"
             }
           ]
         },
+        "includeOtherFields": true,
         "options": {}
       },
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        2864,
-        -48
+        2112,
+        256
       ],
-      "id": "5722dee5-f1d4-4b1c-bb14-231535250455",
+      "id": "8d3cfac6-1822-4e6d-8fc9-9dc74dd9f46d",
       "name": "17 - Output - Rejected Draft"
     },
     {
@@ -584,7 +618,7 @@
           "assignments": [
             {
               "id": "7cf8f077-0c1e-4289-b47e-bf94f4715b41",
-              "name": "workflow_status ",
+              "name": "workflow_status",
               "value": "ready_to_send",
               "type": "string"
             }
@@ -596,10 +630,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        2880,
-        -208
+        2128,
+        96
       ],
-      "id": "d6185c72-cf00-45a3-b036-85298c55486c",
+      "id": "dcf1f130-8921-4be3-b098-049b17a65b4a",
       "name": "16 - Output - Approved Draft"
     },
     {
@@ -630,12 +664,12 @@
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.6,
       "position": [
-        240,
-        0
+        -512,
+        304
       ],
-      "id": "b45d9250-6d75-49d3-8a45-05c351ac8de6",
+      "id": "e7162e83-30df-4183-b5c3-b0f110344bb8",
       "name": "01 - Trigger - Customer Inquiry Form1",
-      "webhookId": "3eb9ff22-d906-4317-a65d-36a88afbc23a"
+      "webhookId": "ee972d99-574a-4f29-9616-cf8ed3cc144a"
     },
     {
       "parameters": {
@@ -655,8 +689,8 @@
             "message": "={{ $json.message }}",
             "inquiry_type": "={{ $json.inquiry_type }}",
             "draft_response": "={{ $json.draft_response }}",
-            "workflow_status": "={{ $json[\"workflow_status \"] }}",
-            "approval_status": "={{ $json[\"approval_status \"] }}"
+            "workflow_status": "={{ $json.workflow_status }}",
+            "approval_status": "={{ $json.approval_status }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -749,10 +783,10 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        3072,
-        -144
+        2320,
+        160
       ],
-      "id": "b3a155b4-d171-47b9-8051-9e20c41f47ff",
+      "id": "94bd81ec-3234-4c59-85f0-973793188f73",
       "name": "Insert row"
     },
     {
@@ -760,10 +794,10 @@
       "type": "n8n-nodes-base.errorTrigger",
       "typeVersion": 1,
       "position": [
-        112,
-        272
+        -640,
+        576
       ],
-      "id": "5cf4209f-9566-415b-87d0-32b408c35d04",
+      "id": "b81b0c31-87bb-4f7e-b622-7c1ebd210134",
       "name": "90 - Error - Workflow Failure Trigger"
     },
     {
@@ -807,10 +841,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        336,
-        272
+        -416,
+        576
       ],
-      "id": "5d4445b2-c1cd-4039-bbbf-0d8b351b64b1",
+      "id": "5323f71f-91fc-4e6f-bb4d-d2094566253e",
       "name": "91 - Error - Normalize Failure Data"
     },
     {
@@ -892,11 +926,46 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        560,
-        272
+        -192,
+        576
       ],
-      "id": "1fd1a297-3638-40fd-af75-17204a47e4f6",
+      "id": "53de21a8-3f22-41bb-8ebe-f9aa5e671ac6",
       "name": "92 - Log - Workflow Error"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "294991f8-4cd5-4fca-a0b5-a0d1ca4620cb",
+              "name": "validation_status",
+              "value": "invalid",
+              "type": "string"
+            },
+            {
+              "id": "4c7fa207-3440-4357-b35b-eea531c67b11",
+              "name": "error_code",
+              "value": "INVALID_EMAIL_FORMAT",
+              "type": "string"
+            },
+            {
+              "id": "3eabfd0e-5436-4e9a-8fa8-c7ab8961be93",
+              "name": "error_message",
+              "value": "Email format is invalid.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        480,
+        592
+      ],
+      "id": "d8941b9e-60c7-4f60-87a5-dce1a547a168",
+      "name": "06A - Error - Invalid Email Format"
     }
   ],
   "pinData": {},
@@ -941,16 +1010,18 @@
         ]
       ]
     },
-    "07 - Error - Missing Required Fields": {
-      "main": [
-        []
-      ]
-    },
     "05 - Validate - Email Format": {
       "main": [
         [
           {
             "node": "06 - Classify - Inquiry Type",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "06A - Error - Invalid Email Format",
             "type": "main",
             "index": 0
           }
@@ -1162,21 +1233,16 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1",
-    "binaryMode": "separate",
-    "timeSavedMode": "fixed",
-    "callerPolicy": "workflowsFromSameOwner",
-    "availableInMCP": false,
-    "executionTimeout": -1
+    "binaryMode": "separate"
   },
-  "versionId": "b200f462-c808-478c-afe0-3931cecfb52f",
+  "versionId": "73bc02e1-ae28-44f0-9ec8-fa556f43d2d1",
   "meta": {
-    "templateCredsSetupCompleted": true,
     "instanceId": "05de636f5a8240fdca839104b63f3fe34527f019bb9fa8651248ff6a49a3af99"
   },
   "nodeGroups": [],
-  "id": "BLuFJRsakCxmLoWg",
+  "id": "7mg2aInihu5aFBfS",
   "tags": []
 }
