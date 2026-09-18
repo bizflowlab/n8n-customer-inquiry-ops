@@ -1,0 +1,1182 @@
+{
+  "name": "Customer Inquiry Ops - Error Handler",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "463b85ff-04dd-4d48-89f5-b2234eba9820",
+              "name": "name",
+              "value": "홍길동",
+              "type": "string"
+            },
+            {
+              "id": "eeb9a70f-9261-4506-86fd-04750b29a503",
+              "name": "email",
+              "value": "test@example.com",
+              "type": "string"
+            },
+            {
+              "id": "5f985d1d-eb4a-475a-a7c1-3e0f6a65c77a",
+              "name": "subject",
+              "value": "환불 문의",
+              "type": "string"
+            },
+            {
+              "id": "436c1c38-b985-4219-8d84-61b1e7907c81",
+              "name": "message",
+              "value": "서비스를 취소하고 환불받고 싶습니다.",
+              "type": "string"
+            },
+            {
+              "id": "c3637095-a406-4b5e-8ec5-2ee9064651d7",
+              "name": "inquiry_id",
+              "value": "TEST-001",
+              "type": "string"
+            },
+            {
+              "id": "a6d825fb-f4ae-4089-a909-d7b15e26058a",
+              "name": "source",
+              "value": "portfolio_test",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        464,
+        0
+      ],
+      "id": "4104ffe5-e78f-46dc-a98d-b94510d0fba2",
+      "name": "02 - Input - Sample Inquiry",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9969d4f2-b928-4c71-b351-984254334c7c",
+              "name": "name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "438db2f4-5b2b-44c0-89c3-2e0535985455",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "494867b5-79ef-4321-b830-8af274ac0c0e",
+              "name": "subject",
+              "value": "={{ $json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "3eacbbdc-2e64-4c9b-a74f-a4721aa63463",
+              "name": "message",
+              "value": "={{ $json.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        672,
+        0
+      ],
+      "id": "de8479bc-6abb-4ab7-8402-9ac1dea5efcf",
+      "name": "03 - Normalize - Inquiry Data"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0fe9ef45-0fe2-4dc4-ac13-5eb50a9b71ba",
+              "leftValue": "={{ $json.name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "bc35ea65-0725-4c6f-80ac-36505b23847b",
+              "leftValue": "={{ $json.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "5f1e1558-9f1c-4234-8a08-ec94a2e6e457",
+              "leftValue": "={{ $json.message }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        896,
+        0
+      ],
+      "id": "b142a4df-b27c-42ac-8642-279bee5258a3",
+      "name": "04 - Validate - Required Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4b824b52-29f2-499e-85d9-c408d5d1cea3",
+              "name": "validation_status",
+              "value": "invalid",
+              "type": "string"
+            },
+            {
+              "id": "0fd45732-1074-4494-8a41-94d8c9c9d276",
+              "name": "error_code",
+              "value": "MISSING_REQUIRED_FIELD",
+              "type": "string"
+            },
+            {
+              "id": "a36bc848-d110-467c-9e51-327b197e5220",
+              "name": "error_message",
+              "value": "Name, email, or message is missing.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1120,
+        96
+      ],
+      "id": "7ae6609d-94f1-4677-bfe5-cbc851875e4c",
+      "name": "07 - Error - Missing Required Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0c53af81-bd9f-4161-80bf-849d0ed4fa00",
+              "leftValue": "={{ /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test($json.email) }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1040,
+        -96
+      ],
+      "id": "1a47b97c-fe4a-443e-9ad9-4694a7210fbf",
+      "name": "05 - Validate - Email Format"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "69c8ec0d-9b5e-43ad-9609-f2ce88abfd8c",
+                    "leftValue": "={{ /(환불|취소|해지|반품)/i.test((($json.subject || '') + ' ' + ($json.message || ''))) }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "refund"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "d537966c-0dd4-48d6-be2f-e52931237529",
+                    "leftValue": "={{ /(오류|에러|작동|연동|설치|기술|버그|접속|실행)/i.test((($json.subject || '') + ' ' + ($json.message || ''))) }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "technical"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "c21639d8-f7ef-46c6-a19b-f68207442d43",
+                    "leftValue": "={{ /(가격|비용|견적|요금|금액|얼마)/i.test((($json.subject || '') + ' ' + ($json.message || ''))) }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "price"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1264,
+        -192
+      ],
+      "id": "e0362e86-ca87-4a5c-a7a9-0ea9a32a32ea",
+      "name": "06 - Classify - Inquiry Type"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "405606b6-9fcf-4d18-ad09-d3bf3b0efb7f",
+              "name": "inquiry_type",
+              "value": "refund",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1488,
+        -288
+      ],
+      "id": "1e2797c2-4847-41a0-836b-17b53f8ea7bc",
+      "name": "07 - Tag - Refund Inquiry"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1488,
+        -144
+      ],
+      "id": "a801ed6a-ee9d-4e5e-843a-5fe57f90d30b",
+      "name": "08 - Tag - Technical Inquiry"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1488,
+        -16
+      ],
+      "id": "8f60461e-c342-4641-bd8d-e588598cafc7",
+      "name": "09 - Tag - Price Inquiry"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1488,
+        128
+      ],
+      "id": "b297b4ed-75fa-460d-8a38-13b049f519a8",
+      "name": "10 - Tag - Other Inquiry"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1a50c4f2-544a-4fd2-8bf6-005bc9cc7ec3",
+              "name": "ai_prompt",
+              "value": "={{ \n`다음 고객 문의에 대한 답변 초안을 작성하십시오.\n\n고객명: ${$json.name}\n문의 유형: ${$json.inquiry_type}\n제목: ${$json.subject}\n문의 내용: ${$json.message}\n\n조건:\n- 친절하고 전문적인 한국어로 작성\n- 확인되지 않은 가격이나 정책을 임의로 만들지 말 것\n- 실제 발송이 아닌 담당자가 검토할 초안으로 작성`\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1824,
+        -128
+      ],
+      "id": "cdfae9de-1e41-44e2-a982-719e6f158474",
+      "name": "11 - Prepare - AI Draft Input"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.ai_prompt }}",
+        "messages": {
+          "messageValues": []
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1984,
+        -128
+      ],
+      "id": "5a5dedb5-dce1-4122-b3eb-b2e3a682af49",
+      "name": "12 - AI - Draft Response1"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-5.6-luna",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1984,
+        48
+      ],
+      "id": "83bd0c0d-f2c7-4736-93f7-91cea4d3915d",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "JiVJCXOYrOPouMlz",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dc945069-5061-4f2d-91d6-e99623ab3609",
+              "name": "draft_response",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "bafa6367-4133-4f90-8909-6a6e2a22c653",
+              "name": "name",
+              "value": "={{ $('11 - Prepare - AI Draft Input').item.json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "8e5afc96-904a-4aa6-8954-e20d315eeda5",
+              "name": "email",
+              "value": "={{ $('11 - Prepare - AI Draft Input').item.json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "ba1944d8-6a87-4c25-b4ae-783fee28ab34",
+              "name": "subject",
+              "value": "={{ $('11 - Prepare - AI Draft Input').item.json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "e15afafc-2739-4fdc-a2d8-3d84ffc6ee48",
+              "name": "message",
+              "value": "={{ $('11 - Prepare - AI Draft Input').item.json.message }}",
+              "type": "string"
+            },
+            {
+              "id": "d9550e46-3d27-472d-b56e-a1c9d7f0a547",
+              "name": "inquiry_type",
+              "value": "={{ $('11 - Prepare - AI Draft Input').item.json.inquiry_type }}",
+              "type": "string"
+            },
+            {
+              "id": "d0b6e790-126f-44f6-83ef-bc7162f590bb",
+              "name": "ai_prompt",
+              "value": "={{ $('11 - Prepare - AI Draft Input').item.json.ai_prompt }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2288,
+        -128
+      ],
+      "id": "c5b6ce97-1083-4b7e-9644-0458aa90c742",
+      "name": "13 - Prepare - Draft Result"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0eb0400b-3f64-4130-8258-38cc7631a3a6",
+              "name": "approval_status ",
+              "value": "approved",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2464,
+        -128
+      ],
+      "id": "84983566-1335-4ac8-bb8c-17a8ffe97c90",
+      "name": "14 - Approval - Manual Test Decision"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f53f5fbb-bb91-46dc-a8e5-e87d722cb504",
+              "leftValue": "={{ $json[\"approval_status \"] }}",
+              "rightValue": "approved",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2656,
+        -128
+      ],
+      "id": "172c659a-3a7f-4ddd-b5aa-a748f9b91dc7",
+      "name": "15 - Validate - Approval Decision"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "715e5984-5153-4592-acef-21b74a2e68bc",
+              "name": "workflow_status ",
+              "value": "needs_revision",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2864,
+        -48
+      ],
+      "id": "5722dee5-f1d4-4b1c-bb14-231535250455",
+      "name": "17 - Output - Rejected Draft"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7cf8f077-0c1e-4289-b47e-bf94f4715b41",
+              "name": "workflow_status ",
+              "value": "ready_to_send",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        2880,
+        -208
+      ],
+      "id": "d6185c72-cf00-45a3-b036-85298c55486c",
+      "name": "16 - Output - Approved Draft"
+    },
+    {
+      "parameters": {
+        "formTitle": "Test",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "subject",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "message",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        240,
+        0
+      ],
+      "id": "b45d9250-6d75-49d3-8a45-05c351ac8de6",
+      "name": "01 - Trigger - Customer Inquiry Form1",
+      "webhookId": "3eb9ff22-d906-4317-a65d-36a88afbc23a"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "zktOUawGHFXry1X3",
+          "mode": "list",
+          "cachedResultName": "Data Table",
+          "cachedResultUrl": "/projects/PKD20epM5hAGX97b/datatables/zktOUawGHFXry1X3"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "name": "={{ $json.name }}",
+            "email": "={{ $json.email }}",
+            "subject": "={{ $json.subject }}",
+            "message": "={{ $json.message }}",
+            "inquiry_type": "={{ $json.inquiry_type }}",
+            "draft_response": "={{ $json.draft_response }}",
+            "workflow_status": "={{ $json[\"workflow_status \"] }}",
+            "approval_status": "={{ $json[\"approval_status \"] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "inquiry_type",
+              "displayName": "inquiry_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "draft_response",
+              "displayName": "draft_response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "approval_status",
+              "displayName": "approval_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "workflow_status",
+              "displayName": "workflow_status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        3072,
+        -144
+      ],
+      "id": "b3a155b4-d171-47b9-8051-9e20c41f47ff",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        112,
+        272
+      ],
+      "id": "5cf4209f-9566-415b-87d0-32b408c35d04",
+      "name": "90 - Error - Workflow Failure Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "599fc3b4-5198-433b-8a94-f1ed54f86203",
+              "name": "workflow_name",
+              "value": "={{ $json.workflow.name }}",
+              "type": "string"
+            },
+            {
+              "id": "73b143ac-5c35-4ded-9022-972406908513",
+              "name": "execution_id",
+              "value": "={{ $json.execution.id }}",
+              "type": "string"
+            },
+            {
+              "id": "238212c5-271f-455f-8fd4-ef72f47fe01a",
+              "name": "failed_node",
+              "value": "={{ $json.execution.lastNodeExecuted }}",
+              "type": "string"
+            },
+            {
+              "id": "c9502334-9e1c-4533-a038-d29f0d2bf5da",
+              "name": "error_message",
+              "value": "={{ $json.execution.error.message }}",
+              "type": "string"
+            },
+            {
+              "id": "d261a9cc-e509-4736-a97c-e39b40c9dca2",
+              "name": "execution_url",
+              "value": "={{ $json.execution.url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        336,
+        272
+      ],
+      "id": "5d4445b2-c1cd-4039-bbbf-0d8b351b64b1",
+      "name": "91 - Error - Normalize Failure Data"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "itEcdIj1IOU2MrAh",
+          "mode": "list",
+          "cachedResultName": "Error Save",
+          "cachedResultUrl": "/projects/PKD20epM5hAGX97b/datatables/itEcdIj1IOU2MrAh"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "workflow_name": "={{ $json.workflow_name }}",
+            "execution_id": "={{ $json.execution_id }}",
+            "failed_node": "={{ $json.failed_node }}",
+            "error_message": "={{ $json.error_message }}",
+            "execution_url": "={{ $json.execution_url }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflow_name",
+              "displayName": "workflow_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "execution_id",
+              "displayName": "execution_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "failed_node",
+              "displayName": "failed_node",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "error_message",
+              "displayName": "error_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "execution_url",
+              "displayName": "execution_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        560,
+        272
+      ],
+      "id": "1fd1a297-3638-40fd-af75-17204a47e4f6",
+      "name": "92 - Log - Workflow Error"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "02 - Input - Sample Inquiry": {
+      "main": [
+        [
+          {
+            "node": "03 - Normalize - Inquiry Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "03 - Normalize - Inquiry Data": {
+      "main": [
+        [
+          {
+            "node": "04 - Validate - Required Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "04 - Validate - Required Fields": {
+      "main": [
+        [
+          {
+            "node": "05 - Validate - Email Format",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "07 - Error - Missing Required Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "07 - Error - Missing Required Fields": {
+      "main": [
+        []
+      ]
+    },
+    "05 - Validate - Email Format": {
+      "main": [
+        [
+          {
+            "node": "06 - Classify - Inquiry Type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "06 - Classify - Inquiry Type": {
+      "main": [
+        [
+          {
+            "node": "07 - Tag - Refund Inquiry",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "08 - Tag - Technical Inquiry",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "09 - Tag - Price Inquiry",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "10 - Tag - Other Inquiry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "07 - Tag - Refund Inquiry": {
+      "main": [
+        [
+          {
+            "node": "11 - Prepare - AI Draft Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "08 - Tag - Technical Inquiry": {
+      "main": [
+        [
+          {
+            "node": "11 - Prepare - AI Draft Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "09 - Tag - Price Inquiry": {
+      "main": [
+        [
+          {
+            "node": "11 - Prepare - AI Draft Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "10 - Tag - Other Inquiry": {
+      "main": [
+        [
+          {
+            "node": "11 - Prepare - AI Draft Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "11 - Prepare - AI Draft Input": {
+      "main": [
+        [
+          {
+            "node": "12 - AI - Draft Response1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "12 - AI - Draft Response1": {
+      "main": [
+        [
+          {
+            "node": "13 - Prepare - Draft Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "12 - AI - Draft Response1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "13 - Prepare - Draft Result": {
+      "main": [
+        [
+          {
+            "node": "14 - Approval - Manual Test Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "14 - Approval - Manual Test Decision": {
+      "main": [
+        [
+          {
+            "node": "15 - Validate - Approval Decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "15 - Validate - Approval Decision": {
+      "main": [
+        [
+          {
+            "node": "16 - Output - Approved Draft",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "17 - Output - Rejected Draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "16 - Output - Approved Draft": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "01 - Trigger - Customer Inquiry Form1": {
+      "main": [
+        [
+          {
+            "node": "02 - Input - Sample Inquiry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "17 - Output - Rejected Draft": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "90 - Error - Workflow Failure Trigger": {
+      "main": [
+        [
+          {
+            "node": "91 - Error - Normalize Failure Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "91 - Error - Normalize Failure Data": {
+      "main": [
+        [
+          {
+            "node": "92 - Log - Workflow Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "executionTimeout": -1
+  },
+  "versionId": "b200f462-c808-478c-afe0-3931cecfb52f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "05de636f5a8240fdca839104b63f3fe34527f019bb9fa8651248ff6a49a3af99"
+  },
+  "nodeGroups": [],
+  "id": "BLuFJRsakCxmLoWg",
+  "tags": []
+}
